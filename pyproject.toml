@@ -1,0 +1,17 @@
+
+[project]
+name = ""
+version = ""
+description = ""
+authors = [
+    {name = "Christian Ohde", email = "christian.s1989@gmail.com"},
+]
+dependencies = [
+    "enocean-ble @ file:///home/chris/workspace/enocean-ble/dist/enocean_ble-0.1.0-py3-none-any.whl",
+]
+requires-python = ">=3.10"
+license = {text = "MIT"}
+
+[tool.pdm.dev-dependencies]
+dev = [
+]
