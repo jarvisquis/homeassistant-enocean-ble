@@ -1,4 +1,5 @@
-from homeassistant import core
+"""The ruuvitag_ble integration."""
+from __future__ import annotations
 
 import logging
 
@@ -18,10 +19,11 @@ PLATFORMS: list[Platform] = [Platform.SENSOR]
 
 _LOGGER = logging.getLogger(__name__)
 
-async def async_setup(hass: core.HomeAssistant, config: dict) -> bool:
+async def async_setup(hass: HomeAssistant, config: dict) -> bool:
     """Set up the Enocean BLE component."""
-    hass.data.setdefault(DOMAIN, {})
+    
     return True
+
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Enocean BLE device from a config entry."""

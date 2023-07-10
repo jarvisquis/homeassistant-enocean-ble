@@ -1,9 +1,9 @@
-from homeassistant import core
+"""The enocean_ble integration."""
+from __future__ import annotations
 
 import logging
 
 from enocean_ble.parser import EnoceanBluetoothDeviceData
-
 from homeassistant.components.bluetooth import BluetoothScanningMode
 from homeassistant.components.bluetooth.passive_update_processor import (
     PassiveBluetoothProcessorCoordinator,
@@ -14,20 +14,18 @@ from homeassistant.core import HomeAssistant
 
 from .const import DOMAIN
 
-PLATFORMS: list[Platform] = [Platform.SENSOR]
+PLATFORMS: list[Platform] = [Platform.BINARY_SENSOR]
 
 _LOGGER = logging.getLogger(__name__)
 
-async def async_setup(hass: core.HomeAssistant, config: dict) -> bool:
-    """Set up the Enocean BLE component."""
-    hass.data.setdefault(DOMAIN, {})
-    return True
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Enocean BLE device from a config entry."""
     address = entry.unique_id
+
     assert address is not None
-    data = EnoceanBluetoothDeviceData(security_key=entry.data.get('security_key'))
+
+    data = EnoceanBluetoothDeviceData(validate_signature=entry.data['validate_signature'], security_key=entry.data['security_key'])
     coordinator = hass.data.setdefault(DOMAIN, {})[
         entry.entry_id
     ] = PassiveBluetoothProcessorCoordinator(
