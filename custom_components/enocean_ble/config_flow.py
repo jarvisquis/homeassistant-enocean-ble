@@ -71,7 +71,7 @@ class EnoceanConfigFlow(ConfigFlow, domain=DOMAIN):
             await self.async_set_unique_id(address, raise_on_progress=False)
             self._abort_if_unique_id_configured()
             return self.async_create_entry(
-                title=self._discovered_devices[address], data=user_input
+                title=address, data=user_input
             )
 
         return self.async_show_form(
