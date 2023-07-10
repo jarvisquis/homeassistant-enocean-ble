@@ -27,7 +27,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Enocean BLE device from a config entry."""
     address = entry.unique_id
     assert address is not None
-    data = EnoceanBluetoothDeviceData(security_key=entry.data.get('security_key'))
+    #data = EnoceanBluetoothDeviceData(security_key=entry.data.get('security_key'))
+    data = EnoceanBluetoothDeviceData()
     coordinator = hass.data.setdefault(DOMAIN, {})[
         entry.entry_id
     ] = PassiveBluetoothProcessorCoordinator(

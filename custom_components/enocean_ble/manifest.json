@@ -8,7 +8,7 @@
     }
   ],
   "codeowners": ["@jarvisquis"],
-  "config_flow": true,
+  "config_flow": false,
   "dependencies": ["bluetooth_adapters"],
   "documentation": "https://github.com/jarvisquis/homeassistant-enocean-ble",
   "iot_class": "local_push",
