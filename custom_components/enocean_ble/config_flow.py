@@ -11,8 +11,9 @@ from homeassistant.components.bluetooth import (
     async_discovered_service_info,
 )
 from homeassistant.config_entries import ConfigFlow
-from homeassistant.const import CONF_ADDRESS
+from homeassistant.const import CONF_ADDRESS, CONF_ACCESS_TOKEN
 from homeassistant.data_entry_flow import FlowResult
+import homeassistant.helpers.config_validation as cv
 
 from .const import DOMAIN
 
@@ -70,26 +71,13 @@ class EnoceanConfigFlow(ConfigFlow, domain=DOMAIN):
             await self.async_set_unique_id(address, raise_on_progress=False)
             self._abort_if_unique_id_configured()
             return self.async_create_entry(
-                title=self._discovered_devices[address], data={}
+                title=self._discovered_devices[address], data=user_input
             )
-
-        current_addresses = self._async_current_ids()
-        for discovery_info in async_discovered_service_info(self.hass, False):
-            address = discovery_info.address
-            if address in current_addresses or address in self._discovered_devices:
-                continue
-            device = EnoceanBluetoothDeviceData()
-            if device.supported(discovery_info):
-                self._discovered_devices[address] = (
-                    device.title or device.get_device_name() or discovery_info.name
-                )
-
-        if not self._discovered_devices:
-            return self.async_abort(reason="no_devices_found")
 
         return self.async_show_form(
             step_id="user",
             data_schema=vol.Schema(
-                {vol.Required(CONF_ADDRESS): vol.In(self._discovered_devices)}
+                {vol.Required(CONF_ADDRESS): cv.string,
+                 vol.Optional(CONF_ACCESS_TOKEN): cv.string}
             ),
         )

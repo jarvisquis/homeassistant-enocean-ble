@@ -1,15 +1,12 @@
 """Support for Enoncen PTM215B binary sensors."""
 from __future__ import annotations
 
-import homeassistant.helpers.config_validation as cv
-import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.components.bluetooth.passive_update_processor import (
     PassiveBluetoothDataProcessor, PassiveBluetoothDataUpdate,
     PassiveBluetoothEntityKey, PassiveBluetoothProcessorCoordinator,
     PassiveBluetoothProcessorEntity)
-from homeassistant.components.sensor import PLATFORM_SCHEMA, SensorEntity
-from homeassistant.const import CONF_PASSWORD,CONF_ADDRESS
+from homeassistant.components.sensor import SensorEntity
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.sensor import sensor_device_info_to_hass_device_info
@@ -17,12 +14,6 @@ from sensor_state_data import DeviceKey, SensorUpdate
 
 from .const import DOMAIN
 
-PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
-    {
-        vol.Required(CONF_PASSWORD): cv.string,
-        vol.Required(CONF_ADDRESS): cv.string,
-    }
-)
 
 def _device_key_to_bluetooth_entity_key(
     device_key: DeviceKey,
@@ -42,7 +33,7 @@ def sensor_update_to_bluetooth_data_update(
             device_id: sensor_device_info_to_hass_device_info(device_info)
             for device_id, device_info in sensor_update.devices.items()
         },
-        entity_descriptions={      },
+        entity_descriptions={},
         entity_data={
             _device_key_to_bluetooth_entity_key(device_key): sensor_values.native_value
             for device_key, sensor_values in sensor_update.entity_values.items()
